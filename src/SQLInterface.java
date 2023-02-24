@@ -3,12 +3,12 @@ import java.util.Scanner;
 
 public class SQLInterface {
 
-	public static void correctUsage() {
-		System.out.println("\nIncorrect number of arguments.\nUsage:\n " + "java   \n");
+	public static void correctInvalidArguments() {
+		System.out.println("\n Invalid number of arguments!! Please provide 3 arguments  \n");
 		System.exit(1);
 	}
 
-	//function to get database connection object
+	// function to get database connection object
 	public static Connection getDataBaseConnectionObject(String[] args) throws SQLException, ClassNotFoundException {
 		String database = args[0];
 		String username = args[1];
@@ -20,14 +20,14 @@ public class SQLInterface {
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException {
-		if (args.length != 3)  //validating arguments
-			correctUsage();
+		if (args.length != 3) // validating arguments
+			correctInvalidArguments();
 
 		// getting database connection object
 		try (Connection conn = getDataBaseConnectionObject(args)) {
 			System.out.println("======Connection successful======== \n");
 
-			Statement stmt = conn.createStatement(); //creating statement from connection object
+			Statement stmt = conn.createStatement(); // creating statement from connection object
 
 			// Starting the dynamic loop
 			while (true) {
@@ -40,8 +40,8 @@ public class SQLInterface {
 					break;// exiting the SQL interface
 				}
 				try {
-					boolean hasRecords = stmt.execute(input);//executing query
-					if (hasRecords) { 
+					boolean hasRecords = stmt.execute(input);// executing query
+					if (hasRecords) {
 						ResultSet rs = stmt.getResultSet();// getting records if exists
 						ResultSetMetaData rsmd = rs.getMetaData();
 						printResult(rs, rsmd); // calling function to print out results
@@ -56,7 +56,7 @@ public class SQLInterface {
 			}
 
 			stmt.close();
-			conn.close(); //closing the database connection
+			conn.close(); // closing the database connection
 			System.out.println("*******Disconnected***************");
 		} catch (SQLException e) {
 			System.out.println("Error: " + e.getMessage());
@@ -65,7 +65,7 @@ public class SQLInterface {
 
 	public static void printResult(ResultSet rs, ResultSetMetaData rsmd) throws SQLException {
 		int columnCount = rsmd.getColumnCount();
-		
+
 		// Printing the column names
 		for (int i = 1; i <= columnCount; i++) {
 			System.out.print(rsmd.getColumnName(i) + "\t");
